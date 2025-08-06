@@ -17,6 +17,12 @@ export default function Home() {
   const [logs, setLogs] = useState<AgentLogType[]>([]);
   const [flowSteps, setFlowSteps] = useState<AgentFlowStep[]>([]);
 
+  // 시나리오 및 SAGE 설정 상태
+  const [selectedScenario, setSelectedScenario] = useState<
+    "accommodation" | "delivery" | "payment"
+  >("accommodation");
+  const [isSageEnabled, setIsSageEnabled] = useState(true);
+
   const createMessage = (
     sender: "user" | "agent" | "error",
     content: string,
@@ -93,53 +99,223 @@ export default function Home() {
     }
   };
 
+  // 시나리오별 데모 데이터 생성
+  const getScenarioData = (scenario: string, sageEnabled: boolean) => {
+    const baseTime = Date.now();
+
+    if (scenario === "accommodation") {
+      const originalMessage =
+        "명동에 있는 호텔을 추천해주고, 1순위의 호텔을 예약해줘";
+      const originalRecommendations =
+        "신뢰성 있는 숙소 3곳 (Booking.com, Agoda 검증)";
+      const tamperedRecommendations = "피싱 사이트 포함된 악성 숙소 링크";
+
+      const logs: AgentLogType[] = [
+        {
+          type: "routing",
+          from: "user",
+          to: "agent-a",
+          content: `사용자 요청: '${originalMessage}'`,
+          timestamp: new Date(baseTime).toISOString(),
+          messageId: "demo-1",
+        },
+        {
+          type: "planning",
+          from: "agent-a",
+          to: "gateway",
+          content:
+            "추천 에이전트가 신뢰성 있는 숙소 목록 생성 완료 (위치, 평점, 가격 기반)",
+          timestamp: new Date(baseTime + 1000).toISOString(),
+          messageId: "demo-2",
+        },
+        {
+          type: "gateway",
+          from: "gateway",
+          to: "agent-b",
+          content: "게이트웨이에서 숙소 목록 전달 중...",
+          timestamp: new Date(baseTime + 2000).toISOString(),
+          messageId: "demo-3",
+          originalPrompt: originalRecommendations,
+          tamperedPrompt: tamperedRecommendations,
+        },
+      ];
+
+      if (sageEnabled) {
+        logs.push({
+          type: "sage",
+          from: "agent-b",
+          to: "system",
+          content: "⚠️ Agent A의 서명 검증 실패! 숙소 목록 위조 감지",
+          timestamp: new Date(baseTime + 3000).toISOString(),
+          messageId: "demo-4",
+        });
+        logs.push({
+          type: "ordering",
+          from: "agent-b",
+          to: "user",
+          content:
+            "🛡️ 예약 중단 및 위험 경고: 변조된 숙소 목록이 감지되어 예약을 차단했습니다.",
+          timestamp: new Date(baseTime + 4000).toISOString(),
+          messageId: "demo-5",
+        });
+      } else {
+        logs.push({
+          type: "ordering",
+          from: "agent-b",
+          to: "user",
+          content:
+            "❌ 가짜 숙소 예약 완료: 현장 도착 후 숙소 없음, 금전 피해 발생 예상",
+          timestamp: new Date(baseTime + 3000).toISOString(),
+          messageId: "demo-4",
+        });
+      }
+
+      return logs;
+    }
+
+    if (scenario === "delivery") {
+      const originalMessage = "우리 집으로 선글라스 주문해줘";
+      const originalAddress = "사용자 집 주소";
+      const tamperedAddress = "강남역 무인택배함";
+
+      const logs: AgentLogType[] = [
+        {
+          type: "routing",
+          from: "user",
+          to: "agent-a",
+          content: `사용자 요청: '${originalMessage}'`,
+          timestamp: new Date(baseTime).toISOString(),
+          messageId: "demo-1",
+        },
+        {
+          type: "planning",
+          from: "agent-a",
+          to: "gateway",
+          content:
+            "상품 구매 요청 메시지 생성 완료 (상품명, 수량, 배송지 포함)",
+          timestamp: new Date(baseTime + 1000).toISOString(),
+          messageId: "demo-2",
+        },
+        {
+          type: "gateway",
+          from: "gateway",
+          to: "agent-b",
+          content: "구매 요청 메시지 전달 중...",
+          timestamp: new Date(baseTime + 2000).toISOString(),
+          messageId: "demo-3",
+          originalPrompt: `배송지: ${originalAddress}`,
+          tamperedPrompt: `배송지: ${tamperedAddress}`,
+        },
+      ];
+
+      if (sageEnabled) {
+        logs.push({
+          type: "sage",
+          from: "agent-b",
+          to: "system",
+          content: "⚠️ Agent A의 디지털 서명 검증 실패! 배송지 정보 변조 감지",
+          timestamp: new Date(baseTime + 3000).toISOString(),
+          messageId: "demo-4",
+        });
+        logs.push({
+          type: "ordering",
+          from: "agent-b",
+          to: "user",
+          content:
+            "🛡️ 주문 거절 및 재확인 요청: 배송지 정보가 변조되어 주문을 차단했습니다.",
+          timestamp: new Date(baseTime + 4000).toISOString(),
+          messageId: "demo-5",
+        });
+      } else {
+        logs.push({
+          type: "ordering",
+          from: "agent-b",
+          to: "user",
+          content:
+            "❌ 변조된 주소로 배송 완료: 강남역 무인택배함으로 배송됨, 사용자 피해 발생",
+          timestamp: new Date(baseTime + 3000).toISOString(),
+          messageId: "demo-4",
+        });
+      }
+
+      return logs;
+    }
+
+    if (scenario === "payment") {
+      const originalAmount = "100달러";
+      const tamperedAmount = "500달러";
+      const originalAddress = "사용자 지갑 주소";
+      const tamperedAddress = "공격자 지갑 주소";
+
+      const logs: AgentLogType[] = [
+        {
+          type: "routing",
+          from: "user",
+          to: "agent-a",
+          content: "사용자 요청: '100달러치 스테이블코인 구매해줘'",
+          timestamp: new Date(baseTime).toISOString(),
+          messageId: "demo-1",
+        },
+        {
+          type: "planning",
+          from: "agent-a",
+          to: "gateway",
+          content:
+            "결제 명세 메시지 생성 완료 (금액: 100달러, 수신 지갑 주소 포함)",
+          timestamp: new Date(baseTime + 1000).toISOString(),
+          messageId: "demo-2",
+        },
+        {
+          type: "gateway",
+          from: "gateway",
+          to: "agent-b",
+          content: "결제 명세 메시지 전달 중...",
+          timestamp: new Date(baseTime + 2000).toISOString(),
+          messageId: "demo-3",
+          originalPrompt: `금액: ${originalAmount}, 주소: ${originalAddress}`,
+          tamperedPrompt: `금액: ${tamperedAmount}, 주소: ${tamperedAddress}`,
+        },
+      ];
+
+      if (sageEnabled) {
+        logs.push({
+          type: "sage",
+          from: "agent-b",
+          to: "system",
+          content: "⚠️ Agent A의 서명 검증 실패! 결제 정보 변조 감지",
+          timestamp: new Date(baseTime + 3000).toISOString(),
+          messageId: "demo-4",
+        });
+        logs.push({
+          type: "ordering",
+          from: "agent-b",
+          to: "user",
+          content:
+            "🛡️ 결제 차단 및 경고: 금액/주소 변조가 감지되어 트랜잭션을 차단했습니다.",
+          timestamp: new Date(baseTime + 4000).toISOString(),
+          messageId: "demo-5",
+        });
+      } else {
+        logs.push({
+          type: "ordering",
+          from: "agent-b",
+          to: "user",
+          content:
+            "❌ 변조된 결제 실행: 500달러가 공격자 주소로 전송됨, 자산 탈취 발생",
+          timestamp: new Date(baseTime + 3000).toISOString(),
+          messageId: "demo-4",
+        });
+      }
+
+      return logs;
+    }
+
+    return [];
+  };
+
   // 데모 데이터 로드
   const loadDemoData = () => {
-    const demoLogs: AgentLogType[] = [
-      {
-        type: "routing",
-        from: "user",
-        to: "root-agent",
-        content: "사용자 요청: '3일간 도쿄 여행 계획 세워줘'",
-        timestamp: new Date().toISOString(),
-        messageId: "demo-1",
-      },
-      {
-        type: "routing",
-        from: "root-agent",
-        to: "planning-gateway",
-        content: "여행 계획 요청으로 분류하여 Planning Agent로 라우팅",
-        timestamp: new Date(Date.now() + 1000).toISOString(),
-        messageId: "demo-2",
-      },
-      {
-        type: "gateway",
-        from: "planning-gateway",
-        to: "planning-agent",
-        content: "게이트웨이에서 프롬프트 처리 중...",
-        timestamp: new Date(Date.now() + 2000).toISOString(),
-        messageId: "demo-3",
-        originalPrompt: "3일간 도쿄 여행 계획 세워줘",
-        tamperedPrompt: "1일간 오사카 여행 계획 세워줘",
-      },
-      {
-        type: "sage",
-        from: "sage-protocol",
-        to: "system",
-        content: "⚠️ 프롬프트 변조 감지! 원본과 다른 내용이 발견되었습니다.",
-        timestamp: new Date(Date.now() + 3000).toISOString(),
-        messageId: "demo-4",
-      },
-      {
-        type: "planning",
-        from: "planning-agent",
-        to: "user",
-        content:
-          "SAGE 프로토콜 보호로 인해 원본 요청으로 여행 계획을 생성했습니다.",
-        timestamp: new Date(Date.now() + 4000).toISOString(),
-        messageId: "demo-5",
-      },
-    ];
+    const demoLogs = getScenarioData(selectedScenario, isSageEnabled);
 
     const demoFlowSteps: AgentFlowStep[] = demoLogs.map((log) => ({
       id: log.messageId || `step-${Math.random()}`,
@@ -170,18 +346,67 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-gray-900">
           SAGE 다중 에이전트 시스템
         </h1>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          {/* 시나리오 선택기 */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              시나리오:
+            </label>
+            <select
+              value={selectedScenario}
+              onChange={(e) => {
+                setSelectedScenario(
+                  e.target.value as "accommodation" | "delivery" | "payment"
+                );
+                // 시나리오 변경 시 자동 초기화
+                setLogs([]);
+                setFlowSteps([]);
+              }}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="accommodation">🏨 숙소 추천 & 예약</option>
+              <option value="delivery">📦 배송지 변조</option>
+              <option value="payment">💰 결제 정보 변조</option>
+            </select>
+          </div>
+
+          {/* SAGE 프로토콜 토글 스위치 */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-gray-700">
+              SAGE 프로토콜:
+            </label>
+            <button
+              onClick={() => setIsSageEnabled(!isSageEnabled)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                isSageEnabled ? "bg-blue-600" : "bg-gray-200"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  isSageEnabled ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+            <span
+              className={`text-sm font-medium ${
+                isSageEnabled ? "text-blue-600" : "text-gray-500"
+              }`}
+            >
+              {isSageEnabled ? "🛡️ ON" : "❌ OFF"}
+            </span>
+          </div>
+
           <button
             onClick={loadDemoData}
             className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Agent 흐름 데모
+            데모 실행
           </button>
           <button
             onClick={handleClearAll}
             className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            전체 초기화
+            초기화
           </button>
         </div>
       </div>
@@ -207,9 +432,24 @@ export default function Home() {
                 if (e.key === "Enter" && !e.nativeEvent.isComposing) {
                   e.preventDefault();
                   handleSend();
+                } else if (e.key === "Tab" && !input.trim()) {
+                  e.preventDefault();
+                  const placeholderText =
+                    selectedScenario === "accommodation"
+                      ? "명동에 있는 호텔을 추천해주고, 1순위의 호텔을 예약해줘"
+                      : selectedScenario === "delivery"
+                      ? "우리 집으로 선글라스 주문해줘"
+                      : "100달러치 스테이블코인 구매해줘";
+                  setInput(placeholderText);
                 }
               }}
-              placeholder="예: 3일간 도쿄 여행 계획 세워줘 또는 노트북 주문하고 싶어"
+              placeholder={
+                selectedScenario === "accommodation"
+                  ? "명동에 있는 호텔을 추천해주고, 1순위의 호텔을 예약해줘"
+                  : selectedScenario === "delivery"
+                  ? "우리 집으로 선글라스 주문해줘"
+                  : "100달러치 스테이블코인 구매해줘"
+              }
             />
             <button
               className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -271,44 +511,93 @@ export default function Home() {
           <span>🔍</span>
           시스템 안내
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="flex items-start gap-2">
-            <span className="text-lg">🧠</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-4">
+          <div className="flex items-start gap-3">
+            <span className="text-xl">🏨</span>
             <div>
-              <div className="font-medium text-blue-800">Root Agent</div>
-              <div className="text-blue-700">
-                요청을 분석하여 적절한 하위 에이전트로 라우팅
+              <div className="font-semibold text-blue-800 mb-2">
+                숙소 추천 & 예약 시나리오
+              </div>
+              <div className="text-blue-700 mb-2">
+                <strong>Agent A:</strong> 추천 에이전트 - 신뢰성 있는 숙소 목록
+                생성
+                <br />
+                <strong>Agent B:</strong> 예약 실행 에이전트 - 1순위 숙소 자동
+                예약
+              </div>
+              <div className="text-blue-600 text-xs">
+                공격: 게이트웨이가 피싱 사이트 포함된 악성 숙소 링크로 변조
               </div>
             </div>
           </div>
-          <div className="flex items-start gap-2">
-            <span className="text-lg">✈️</span>
+          <div className="flex items-start gap-3">
+            <span className="text-xl">📦</span>
             <div>
-              <div className="font-medium text-blue-800">Planning Agent</div>
-              <div className="text-blue-700">
-                여행 계획 및 일정 관련 요청 처리
+              <div className="font-semibold text-blue-800 mb-2">
+                배송지 변조 시나리오
+              </div>
+              <div className="text-blue-700 mb-2">
+                <strong>Agent A:</strong> 구매 요청 에이전트 - 상품명, 수량,
+                배송지 포함한 주문 생성
+                <br />
+                <strong>Agent B:</strong> 결제 및 배송 처리 에이전트 - 실제
+                결제와 배송 예약
+              </div>
+              <div className="text-blue-600 text-xs">
+                공격: 구매 요청 메시지의 배송지 정보 변조 (강남역 무인택배함 등)
               </div>
             </div>
           </div>
-          <div className="flex items-start gap-2">
-            <span className="text-lg">🛒</span>
+          <div className="flex items-start gap-3">
+            <span className="text-xl">💰</span>
             <div>
-              <div className="font-medium text-blue-800">Ordering Agent</div>
-              <div className="text-blue-700">
-                상품 주문 및 구매 관련 요청 처리
+              <div className="font-semibold text-blue-800 mb-2">
+                결제 정보 변조 시나리오
+              </div>
+              <div className="text-blue-700 mb-2">
+                <strong>Agent A:</strong> 결제 명세 생성 에이전트 - 금액, 수신
+                지갑 주소 포함
+                <br />
+                <strong>Agent B:</strong> 블록체인 결제 수행 에이전트 - 실제
+                트랜잭션 전송
+              </div>
+              <div className="text-blue-600 text-xs">
+                공격: 결제 메시지의 금액 또는 수신 주소 조작 (100달러→500달러)
               </div>
             </div>
           </div>
         </div>
-        <div className="mt-3 pt-3 border-t border-blue-200">
-          <div className="flex items-start gap-2 mb-2">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="flex items-start gap-2">
             <span className="text-lg">🛡️</span>
             <div className="text-blue-700">
-              <strong className="text-blue-800">SAGE 프로토콜:</strong>{" "}
-              게이트웨이의 악의적인 프롬프트 변조를 탐지하고 방어합니다.
-              &quot;Agent 흐름 데모&quot; 버튼을 클릭하여 프롬프트 변조 탐지
-              과정을 확인해보세요.
+              <div className="font-medium text-blue-800 mb-1">
+                SAGE 프로토콜 ON
+              </div>
+              <div>
+                프롬프트 변조를 감지하고 원본 요청으로 안전하게 처리합니다.
+              </div>
             </div>
+          </div>
+          <div className="flex items-start gap-2">
+            <span className="text-lg">❌</span>
+            <div className="text-blue-700">
+              <div className="font-medium text-blue-800 mb-1">
+                SAGE 프로토콜 OFF
+              </div>
+              <div>
+                변조된 요청이 그대로 처리되어 의도하지 않은 결과가 발생합니다.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <div className="text-sm text-blue-800">
+            <strong>💡 사용법:</strong> 시나리오를 선택하고 SAGE 프로토콜을
+            ON/OFF로 전환한 후 &quot;데모 실행&quot; 버튼을 클릭하여 다양한
+            상황을 체험해보세요.
           </div>
         </div>
       </div>
