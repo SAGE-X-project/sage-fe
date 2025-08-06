@@ -32,7 +32,7 @@ export default function MessageFlow({
   return (
     <div
       ref={scrollRef}
-      className="flex flex-col gap-4 p-6 bg-gray-50 rounded-xl shadow-inner max-h-[70vh] overflow-y-auto w-full"
+      className="flex flex-col gap-4 p-6 bg-gray-50 rounded-xl shadow-inner h-[600px] overflow-y-auto w-full"
     >
       {messages.length === 0 ? (
         <div className="text-center text-gray-500 py-8">
