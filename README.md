@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sage Multi-Agent Frontend + Backend Setup Guide
 
-## Getting Started
+This guide explains how to set up and run the full Sage multi-agent system, including the backend agents and the frontend interface.
 
-First, run the development server:
+
+## Backend Setup (`sage-multi-agent`)
+
+### 1. Clone the repository and move to the root directory
+
+```bash
+git clone https://github.com/SAGE-X-project/sage-multi-agent.git
+cd sage-multi-agent
+````
+
+### 2. Install Go dependencies
+
+```bash
+go mod tidy
+```
+
+### 3. Build the agents, CLI, and client server
+
+```bash
+# Build the root agent
+go build -o root/root ./root
+
+# Build the sub-agents
+go build -o ordering/ordering ./ordering
+go build -o planning/planning ./planning
+
+# Build the CLI client
+go build -o cli/cli ./cli
+
+# Build the client server (API)
+go build -o client/client ./client
+```
+
+### 4. Set your Google API Key for the Gemini model
+
+Get your API key from [Google AI Studio](https://ai.google.dev/gemini-api/docs/api-key), then export it:
+
+```bash
+export GOOGLE_API_KEY=your_api_key
+```
+
+### 5. Run the agents (in separate terminal windows)
+
+```bash
+# Terminal 1 - Root Agent
+export GOOGLE_API_KEY=your_api_key
+go run ./root/main.go
+```
+
+```bash
+# Terminal 2 - Planning Agent
+export GOOGLE_API_KEY=your_api_key
+go run ./planning/main.go -activate-sage=false
+```
+
+```bash
+# Terminal 3 - Ordering Agent
+export GOOGLE_API_KEY=your_api_key
+go run ./ordering/main.go -activate-sage=false
+```
+
+### 6. Run the client server
+
+```bash
+cd sage-multi-agent
+./client/client
+```
+
+---
+
+## Frontend Setup (`sage-fe`)
+
+### 1. Clone the frontend project and move to the directory
+
+```bash
+git clone https://github.com/SAGE-X-project/sage-fe.git
+cd sage-fe
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the frontend development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✅ Notes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+* Make sure all agents are running before you test the frontend.
+* The frontend connects to the backend through the client server (default: `http://localhost:8086`).
+* WebSocket-based agent log monitoring is available in the frontend "Agent Monitoring" section.
+* Real-time prompt interactions are handled in the "User Chat" section.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Enjoy using the Sage Multi-Agent demo!
