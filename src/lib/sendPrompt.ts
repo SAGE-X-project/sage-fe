@@ -1,14 +1,39 @@
-export async function sendPrompt(prompt: string): Promise<string> {
+import { PromptRequest, PromptResponse } from "@/types/api";
+
+export interface SendPromptOptions {
+  sageEnabled?: boolean;
+  scenario?: "accommodation" | "delivery" | "payment";
+  metadata?: {
+    userId?: string;
+    sessionId?: string;
+  };
+}
+
+export async function sendPrompt(
+  prompt: string,
+  options: SendPromptOptions = {}
+): Promise<PromptResponse> {
   try {
     console.log("Sending request to Next.js API route");
-    console.log("Request payload:", { prompt });
+    
+    const request: PromptRequest = {
+      prompt,
+      sageEnabled: options.sageEnabled ?? true,
+      scenario: options.scenario,
+      metadata: {
+        ...options.metadata,
+        timestamp: new Date().toISOString(),
+      },
+    };
+    
+    console.log("Request payload:", request);
 
     const res = await fetch("/api/send-prompt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify(request),
     });
 
     console.log("Response status:", res.status);
@@ -16,25 +41,20 @@ export async function sendPrompt(prompt: string): Promise<string> {
     if (!res.ok) {
       const errorText = await res.text();
       console.error("Error response:", errorText);
-      throw new Error(`HTTP ${res.status}: ${errorText}`);
+      
+      // Try to parse error as JSON
+      try {
+        const errorJson = JSON.parse(errorText);
+        throw new Error(errorJson.error || `HTTP ${res.status}: ${errorText}`);
+      } catch {
+        throw new Error(`HTTP ${res.status}: ${errorText}`);
+      }
     }
 
-    const data = await res.json();
+    const data: PromptResponse = await res.json();
     console.log("API Response:", data);
 
-    // Next.js API Route를 통해 받은 응답 처리
-    if (typeof data === "string") {
-      return data;
-    }
-
-    // 백엔드 서버의 응답 구조에 맞게 처리
-    return (
-      data.response ||
-      data.result ||
-      data.message ||
-      data.text ||
-      JSON.stringify(data)
-    );
+    return data;
   } catch (error) {
     console.error("Error in sendPrompt:", error);
 
@@ -46,4 +66,19 @@ export async function sendPrompt(prompt: string): Promise<string> {
 
     throw error;
   }
+}
+
+// Utility function to extract text response
+export function extractTextResponse(response: PromptResponse): string {
+  if (response.error) {
+    throw new Error(response.error);
+  }
+  
+  return (
+    response.response ||
+    response.result ||
+    response.message ||
+    response.text ||
+    JSON.stringify(response)
+  );
 }
