@@ -1,26 +1,142 @@
 @import "tailwindcss";
+@import "../styles/design-system.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Override Tailwind's color variables with our design system */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Map our design system colors to Tailwind */
+  --color-background: var(--sage-bg-primary);
+  --color-foreground: var(--sage-text-primary);
+  
+  /* Fonts */
+  --font-sans: var(--sage-font-sans);
+  --font-mono: var(--sage-font-mono);
+  
+  /* Primary colors for Tailwind utilities */
+  --color-primary-50: var(--sage-primary-50);
+  --color-primary-100: var(--sage-primary-100);
+  --color-primary-200: var(--sage-primary-200);
+  --color-primary-300: var(--sage-primary-300);
+  --color-primary-400: var(--sage-primary-400);
+  --color-primary-500: var(--sage-primary-500);
+  --color-primary-600: var(--sage-primary-600);
+  --color-primary-700: var(--sage-primary-700);
+  --color-primary-800: var(--sage-primary-800);
+  --color-primary-900: var(--sage-primary-900);
+  
+  /* Gray colors */
+  --color-gray-50: var(--sage-gray-50);
+  --color-gray-100: var(--sage-gray-100);
+  --color-gray-200: var(--sage-gray-200);
+  --color-gray-300: var(--sage-gray-300);
+  --color-gray-400: var(--sage-gray-400);
+  --color-gray-500: var(--sage-gray-500);
+  --color-gray-600: var(--sage-gray-600);
+  --color-gray-700: var(--sage-gray-700);
+  --color-gray-800: var(--sage-gray-800);
+  --color-gray-900: var(--sage-gray-900);
+  
+  /* Success/Green colors */
+  --color-green-50: var(--sage-green-50);
+  --color-green-100: var(--sage-green-100);
+  --color-green-200: var(--sage-green-200);
+  --color-green-300: var(--sage-green-300);
+  --color-green-400: var(--sage-green-400);
+  --color-green-500: var(--sage-green-500);
+  --color-green-600: var(--sage-green-600);
+  --color-green-700: var(--sage-green-700);
+  --color-green-800: var(--sage-green-800);
+  
+  /* Warning/Yellow colors */
+  --color-yellow-50: var(--sage-yellow-50);
+  --color-yellow-100: var(--sage-yellow-100);
+  --color-yellow-200: var(--sage-yellow-200);
+  --color-yellow-300: var(--sage-yellow-300);
+  --color-yellow-400: var(--sage-yellow-400);
+  --color-yellow-500: var(--sage-yellow-500);
+  --color-yellow-600: var(--sage-yellow-600);
+  --color-yellow-700: var(--sage-yellow-700);
+  --color-yellow-800: var(--sage-yellow-800);
+  
+  /* Error/Red colors */
+  --color-red-50: var(--sage-red-50);
+  --color-red-100: var(--sage-red-100);
+  --color-red-200: var(--sage-red-200);
+  --color-red-300: var(--sage-red-300);
+  --color-red-400: var(--sage-red-400);
+  --color-red-500: var(--sage-red-500);
+  --color-red-600: var(--sage-red-600);
+  --color-red-700: var(--sage-red-700);
+  --color-red-800: var(--sage-red-800);
+  
+  /* Info/Indigo colors */
+  --color-indigo-50: var(--sage-indigo-50);
+  --color-indigo-100: var(--sage-indigo-100);
+  --color-indigo-200: var(--sage-indigo-200);
+  --color-indigo-300: var(--sage-indigo-300);
+  --color-indigo-400: var(--sage-indigo-400);
+  --color-indigo-500: var(--sage-indigo-500);
+  --color-indigo-600: var(--sage-indigo-600);
+  --color-indigo-700: var(--sage-indigo-700);
+  --color-indigo-800: var(--sage-indigo-800);
+  
+  /* Blue colors */
+  --color-blue-50: var(--sage-primary-50);
+  --color-blue-100: var(--sage-primary-100);
+  --color-blue-200: var(--sage-primary-200);
+  --color-blue-300: var(--sage-primary-300);
+  --color-blue-400: var(--sage-primary-400);
+  --color-blue-500: var(--sage-primary-500);
+  --color-blue-600: var(--sage-primary-600);
+  --color-blue-700: var(--sage-primary-700);
+  --color-blue-800: var(--sage-primary-800);
+  
+  /* Purple colors for routing agent */
+  --color-purple-100: var(--sage-indigo-100);
+  --color-purple-300: var(--sage-indigo-300);
+  --color-purple-800: var(--sage-indigo-800);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--sage-bg-primary);
+  color: var(--sage-text-primary);
+  font-family: var(--sage-font-sans);
+  line-height: var(--sage-leading-normal);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure smooth transitions for dark mode */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sage-bg-secondary);
+  border-radius: var(--sage-radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sage-gray-400);
+  border-radius: var(--sage-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sage-gray-500);
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: var(--sage-gray-600);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--sage-gray-500);
+  }
 }

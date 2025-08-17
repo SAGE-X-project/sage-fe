@@ -55,26 +55,26 @@ export default function AgentFlowVisualization({
   maxHeight = "h-96",
 }: AgentFlowVisualizationProps) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="sage-card">
       {showHeader && (
-        <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-xl">
-          <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+        <div className="sage-card-header">
+          <h3 className="sage-body-small font-semibold flex items-center gap-2">
             <span className="text-lg">🔄</span>
             Agent 메시지 흐름
           </h3>
         </div>
       )}
 
-      <div className={clsx("p-4 overflow-auto", maxHeight)}>
+      <div className={clsx("p-4 overflow-auto sage-scrollbar", maxHeight)}>
         {flowSteps.length === 0 ? (
-          <div className="text-center text-gray-500 py-8">
+          <div className="text-center py-8" style={{ color: "var(--sage-text-tertiary)" }}>
             <div className="text-2xl mb-2">🌊</div>
-            <div>메시지 흐름을 기다리는 중...</div>
+            <div className="sage-body">메시지 흐름을 기다리는 중...</div>
           </div>
         ) : (
           <div className="relative">
             {/* Flow timeline */}
-            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+            <div className="absolute left-6 top-0 bottom-0 w-0.5" style={{ backgroundColor: "var(--sage-border-default)" }}></div>
 
             <div className="space-y-4">
               {flowSteps.map((step, idx) => (
@@ -82,7 +82,7 @@ export default function AgentFlowVisualization({
                   {/* Icon circle */}
                   <div
                     className={clsx(
-                      "relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 text-lg",
+                      "relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-2 text-lg sage-agent-badge",
                       step.color,
                       getStatusAnimation(step.status)
                     )}
@@ -94,43 +94,43 @@ export default function AgentFlowVisualization({
                   <div className="flex-1 min-w-0">
                     <div
                       className={clsx(
-                        "p-4 rounded-lg border shadow-sm",
+                        "p-4 rounded-lg border shadow-sm sage-agent-badge",
                         step.color
                       )}
                     >
                       {/* Header */}
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold text-sm uppercase tracking-wide">
+                          <span className="sage-body-small font-semibold uppercase tracking-wide">
                             {step.type}
                           </span>
                           <span
                             className={clsx(
-                              "text-sm",
+                              "sage-body-small",
                               getStatusAnimation(step.status)
                             )}
                           >
                             {getStatusIndicator(step.status)}
                           </span>
                         </div>
-                        <div className="text-xs text-gray-600">
+                        <div className="sage-caption">
                           {formatTime(step.timestamp)}
                         </div>
                       </div>
 
                       {/* Flow direction */}
-                      <div className="flex items-center gap-2 mb-3 text-sm">
-                        <span className="px-2 py-1 bg-white bg-opacity-60 rounded font-mono">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="px-2 py-1 bg-white bg-opacity-60 rounded sage-code">
                           {step.from}
                         </span>
-                        <span className="text-gray-500">→</span>
-                        <span className="px-2 py-1 bg-white bg-opacity-60 rounded font-mono">
+                        <span style={{ color: "var(--sage-text-tertiary)" }}>→</span>
+                        <span className="px-2 py-1 bg-white bg-opacity-60 rounded sage-code">
                           {step.to}
                         </span>
                       </div>
 
                       {/* Content */}
-                      <div className="text-sm leading-relaxed">
+                      <div className="sage-body-small">
                         {step.content}
                       </div>
                     </div>

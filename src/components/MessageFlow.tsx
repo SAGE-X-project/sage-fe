@@ -32,10 +32,11 @@ export default function MessageFlow({
   return (
     <div
       ref={scrollRef}
-      className="flex flex-col gap-4 p-6 bg-gray-50 rounded-xl shadow-inner h-[600px] overflow-y-auto w-full"
+      className="flex flex-col gap-4 p-6 rounded-xl shadow-inner h-[600px] overflow-y-auto w-full sage-scrollbar"
+      style={{ backgroundColor: "var(--sage-bg-secondary)" }}
     >
       {messages.length === 0 ? (
-        <div className="text-center text-gray-500 py-8">
+        <div className="text-center py-8 sage-body" style={{ color: "var(--sage-text-tertiary)" }}>
           대화를 시작해보세요! 💬
         </div>
       ) : (

@@ -19,10 +19,10 @@ export default function ChatBubble({
   const isUser = message.sender === "user";
   const isError = message.sender === "error";
 
-  const getBubbleColor = () => {
-    if (isError) return "bg-red-100 border-red-300";
-    if (isUser) return "bg-blue-100 border-blue-300";
-    return "bg-green-100 border-green-300";
+  const getBubbleClass = () => {
+    if (isError) return "sage-message-error";
+    if (isUser) return "sage-message-user";
+    return "sage-message-agent";
   };
 
   const getProfileEmoji = () => {
@@ -39,7 +39,7 @@ export default function ChatBubble({
     <div className={`flex flex-col gap-1 max-w-[80%] ${getAlignment()}`}>
       {/* 프로필 이름 */}
       <div
-        className={`text-[15px] text-gray-600 font-bold px-2 ${
+        className={`sage-body-small font-bold px-2 ${
           isUser ? "text-right" : "text-left"
         }`}
       >
@@ -49,8 +49,8 @@ export default function ChatBubble({
 
       {/* 메시지 말풍선 */}
       <div
-        className={`px-4 py-3 rounded-2xl border ${getBubbleColor()} ${
-          isUser ? "rounded-br-sm" : "rounded-bl-sm"
+        className={`sage-message ${getBubbleClass()} ${
+          isUser ? "ml-auto" : "mr-auto"
         }`}
       >
         {showTyping && isLatest && !isUser ? (
@@ -66,7 +66,7 @@ export default function ChatBubble({
 
       {/* 타임스탬프 */}
       <div
-        className={`text-xs text-gray-400 px-2 ${
+        className={`sage-caption px-2 ${
           isUser ? "text-right" : "text-left"
         }`}
       >

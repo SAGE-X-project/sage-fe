@@ -1,0 +1,661 @@
+/* 
+ * SAGE Design System CSS
+ * 통합 색상 팔레트 및 디자인 토큰
+ */
+
+/* ========================================
+   1. CSS Variables - Light Mode (Default)
+   ======================================== */
+:root {
+  /* Primary Colors - Blue (신뢰, 보안) */
+  --sage-primary-50: #eff6ff;
+  --sage-primary-100: #dbeafe;
+  --sage-primary-200: #bfdbfe;
+  --sage-primary-300: #93bbfc;
+  --sage-primary-400: #60a5fa;
+  --sage-primary-500: #3b82f6;
+  --sage-primary-600: #2563eb;
+  --sage-primary-700: #1d4ed8;
+  --sage-primary-800: #1e40af;
+  --sage-primary-900: #1e3a8a;
+  --sage-primary-950: #172554;
+
+  /* Neutral Colors - Gray */
+  --sage-gray-50: #f9fafb;
+  --sage-gray-100: #f3f4f6;
+  --sage-gray-200: #e5e7eb;
+  --sage-gray-300: #d1d5db;
+  --sage-gray-400: #9ca3af;
+  --sage-gray-500: #6b7280;
+  --sage-gray-600: #4b5563;
+  --sage-gray-700: #374151;
+  --sage-gray-800: #1f2937;
+  --sage-gray-900: #111827;
+  --sage-gray-950: #030712;
+
+  /* Accent Colors - SAGE Green (보안 인증) */
+  --sage-green-50: #f0fdf4;
+  --sage-green-100: #dcfce7;
+  --sage-green-200: #bbf7d0;
+  --sage-green-300: #86efac;
+  --sage-green-400: #4ade80;
+  --sage-green-500: #22c55e;
+  --sage-green-600: #16a34a;
+  --sage-green-700: #15803d;
+  --sage-green-800: #166534;
+  --sage-green-900: #14532d;
+
+  /* Warning Colors - Yellow */
+  --sage-yellow-50: #fefce8;
+  --sage-yellow-100: #fef3c7;
+  --sage-yellow-200: #fde68a;
+  --sage-yellow-300: #fcd34d;
+  --sage-yellow-400: #fbbf24;
+  --sage-yellow-500: #f59e0b;
+  --sage-yellow-600: #d97706;
+  --sage-yellow-700: #b45309;
+  --sage-yellow-800: #92400e;
+  --sage-yellow-900: #78350f;
+
+  /* Error Colors - Red */
+  --sage-red-50: #fef2f2;
+  --sage-red-100: #fee2e2;
+  --sage-red-200: #fecaca;
+  --sage-red-300: #fca5a5;
+  --sage-red-400: #f87171;
+  --sage-red-500: #ef4444;
+  --sage-red-600: #dc2626;
+  --sage-red-700: #b91c1c;
+  --sage-red-800: #991b1b;
+  --sage-red-900: #7f1d1d;
+
+  /* Info Colors - Indigo */
+  --sage-indigo-50: #eef2ff;
+  --sage-indigo-100: #e0e7ff;
+  --sage-indigo-200: #c7d2fe;
+  --sage-indigo-300: #a5b4fc;
+  --sage-indigo-400: #818cf8;
+  --sage-indigo-500: #6366f1;
+  --sage-indigo-600: #4f46e5;
+  --sage-indigo-700: #4338ca;
+  --sage-indigo-800: #3730a3;
+  --sage-indigo-900: #312e81;
+
+  /* Semantic Colors - Light Mode */
+  --sage-bg-primary: #ffffff;
+  --sage-bg-secondary: var(--sage-gray-50);
+  --sage-bg-tertiary: var(--sage-gray-100);
+  --sage-bg-inverse: var(--sage-gray-900);
+
+  --sage-text-primary: var(--sage-gray-900);
+  --sage-text-secondary: var(--sage-gray-600);
+  --sage-text-tertiary: var(--sage-gray-500);
+  --sage-text-inverse: #ffffff;
+  --sage-text-disabled: var(--sage-gray-400);
+
+  --sage-border-default: var(--sage-gray-200);
+  --sage-border-strong: var(--sage-gray-300);
+  --sage-border-subtle: var(--sage-gray-100);
+
+  /* Component Specific - Light Mode */
+  --sage-btn-primary-bg: var(--sage-primary-600);
+  --sage-btn-primary-hover: var(--sage-primary-700);
+  --sage-btn-primary-text: #ffffff;
+
+  --sage-btn-secondary-bg: var(--sage-gray-100);
+  --sage-btn-secondary-hover: var(--sage-gray-200);
+  --sage-btn-secondary-text: var(--sage-gray-700);
+
+  --sage-input-bg: #ffffff;
+  --sage-input-border: var(--sage-gray-300);
+  --sage-input-focus-border: var(--sage-primary-500);
+  --sage-input-text: var(--sage-gray-900);
+  --sage-input-placeholder: var(--sage-gray-400);
+
+  /* Status Colors */
+  --sage-status-success-bg: var(--sage-green-50);
+  --sage-status-success-border: var(--sage-green-300);
+  --sage-status-success-text: var(--sage-green-800);
+
+  --sage-status-warning-bg: var(--sage-yellow-50);
+  --sage-status-warning-border: var(--sage-yellow-300);
+  --sage-status-warning-text: var(--sage-yellow-800);
+
+  --sage-status-error-bg: var(--sage-red-50);
+  --sage-status-error-border: var(--sage-red-300);
+  --sage-status-error-text: var(--sage-red-800);
+
+  --sage-status-info-bg: var(--sage-indigo-50);
+  --sage-status-info-border: var(--sage-indigo-300);
+  --sage-status-info-text: var(--sage-indigo-800);
+
+  /* Agent Type Colors */
+  --sage-agent-routing-bg: var(--sage-indigo-100);
+  --sage-agent-routing-border: var(--sage-indigo-300);
+  --sage-agent-routing-text: var(--sage-indigo-800);
+
+  --sage-agent-planning-bg: var(--sage-primary-100);
+  --sage-agent-planning-border: var(--sage-primary-300);
+  --sage-agent-planning-text: var(--sage-primary-800);
+
+  --sage-agent-ordering-bg: var(--sage-green-100);
+  --sage-agent-ordering-border: var(--sage-green-300);
+  --sage-agent-ordering-text: var(--sage-green-800);
+
+  --sage-agent-gateway-bg: var(--sage-yellow-100);
+  --sage-agent-gateway-border: var(--sage-yellow-300);
+  --sage-agent-gateway-text: var(--sage-yellow-800);
+
+  --sage-agent-sage-bg: var(--sage-indigo-100);
+  --sage-agent-sage-border: var(--sage-indigo-300);
+  --sage-agent-sage-text: var(--sage-indigo-800);
+
+  /* Typography */
+  --sage-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --sage-font-mono: 'Fira Code', 'JetBrains Mono', 'Cascadia Code', 'SF Mono', Consolas, 'Liberation Mono', monospace;
+
+  /* Font Sizes */
+  --sage-text-xs: 0.75rem;     /* 12px */
+  --sage-text-sm: 0.875rem;    /* 14px */
+  --sage-text-base: 1rem;      /* 16px */
+  --sage-text-lg: 1.125rem;    /* 18px */
+  --sage-text-xl: 1.25rem;     /* 20px */
+  --sage-text-2xl: 1.5rem;     /* 24px */
+  --sage-text-3xl: 1.875rem;   /* 30px */
+  --sage-text-4xl: 2.25rem;    /* 36px */
+
+  /* Line Heights */
+  --sage-leading-tight: 1.25;
+  --sage-leading-snug: 1.375;
+  --sage-leading-normal: 1.5;
+  --sage-leading-relaxed: 1.625;
+  --sage-leading-loose: 2;
+
+  /* Shadows */
+  --sage-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --sage-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --sage-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --sage-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --sage-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Border Radius */
+  --sage-radius-sm: 0.25rem;   /* 4px */
+  --sage-radius: 0.375rem;     /* 6px */
+  --sage-radius-md: 0.5rem;    /* 8px */
+  --sage-radius-lg: 0.75rem;   /* 12px */
+  --sage-radius-xl: 1rem;      /* 16px */
+  --sage-radius-2xl: 1.5rem;   /* 24px */
+  --sage-radius-full: 9999px;
+
+  /* Spacing */
+  --sage-space-0: 0;
+  --sage-space-1: 0.25rem;     /* 4px */
+  --sage-space-2: 0.5rem;      /* 8px */
+  --sage-space-3: 0.75rem;     /* 12px */
+  --sage-space-4: 1rem;        /* 16px */
+  --sage-space-5: 1.25rem;     /* 20px */
+  --sage-space-6: 1.5rem;      /* 24px */
+  --sage-space-8: 2rem;        /* 32px */
+  --sage-space-10: 2.5rem;     /* 40px */
+  --sage-space-12: 3rem;       /* 48px */
+  --sage-space-16: 4rem;       /* 64px */
+}
+
+/* ========================================
+   2. Dark Mode Variables
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Semantic Colors - Dark Mode */
+    --sage-bg-primary: var(--sage-gray-950);
+    --sage-bg-secondary: var(--sage-gray-900);
+    --sage-bg-tertiary: var(--sage-gray-800);
+    --sage-bg-inverse: #ffffff;
+
+    --sage-text-primary: var(--sage-gray-50);
+    --sage-text-secondary: var(--sage-gray-300);
+    --sage-text-tertiary: var(--sage-gray-400);
+    --sage-text-inverse: var(--sage-gray-900);
+    --sage-text-disabled: var(--sage-gray-600);
+
+    --sage-border-default: var(--sage-gray-700);
+    --sage-border-strong: var(--sage-gray-600);
+    --sage-border-subtle: var(--sage-gray-800);
+
+    /* Component Specific - Dark Mode */
+    --sage-btn-primary-bg: var(--sage-primary-500);
+    --sage-btn-primary-hover: var(--sage-primary-600);
+    --sage-btn-primary-text: #ffffff;
+
+    --sage-btn-secondary-bg: var(--sage-gray-800);
+    --sage-btn-secondary-hover: var(--sage-gray-700);
+    --sage-btn-secondary-text: var(--sage-gray-200);
+
+    --sage-input-bg: var(--sage-gray-900);
+    --sage-input-border: var(--sage-gray-700);
+    --sage-input-focus-border: var(--sage-primary-400);
+    --sage-input-text: var(--sage-gray-100);
+    --sage-input-placeholder: var(--sage-gray-500);
+
+    /* Status Colors - Dark Mode */
+    --sage-status-success-bg: rgba(34, 197, 94, 0.1);
+    --sage-status-success-border: var(--sage-green-600);
+    --sage-status-success-text: var(--sage-green-400);
+
+    --sage-status-warning-bg: rgba(245, 158, 11, 0.1);
+    --sage-status-warning-border: var(--sage-yellow-600);
+    --sage-status-warning-text: var(--sage-yellow-400);
+
+    --sage-status-error-bg: rgba(239, 68, 68, 0.1);
+    --sage-status-error-border: var(--sage-red-600);
+    --sage-status-error-text: var(--sage-red-400);
+
+    --sage-status-info-bg: rgba(99, 102, 241, 0.1);
+    --sage-status-info-border: var(--sage-indigo-600);
+    --sage-status-info-text: var(--sage-indigo-400);
+
+    /* Agent Type Colors - Dark Mode */
+    --sage-agent-routing-bg: rgba(99, 102, 241, 0.15);
+    --sage-agent-routing-border: var(--sage-indigo-600);
+    --sage-agent-routing-text: var(--sage-indigo-300);
+
+    --sage-agent-planning-bg: rgba(59, 130, 246, 0.15);
+    --sage-agent-planning-border: var(--sage-primary-600);
+    --sage-agent-planning-text: var(--sage-primary-300);
+
+    --sage-agent-ordering-bg: rgba(34, 197, 94, 0.15);
+    --sage-agent-ordering-border: var(--sage-green-600);
+    --sage-agent-ordering-text: var(--sage-green-300);
+
+    --sage-agent-gateway-bg: rgba(245, 158, 11, 0.15);
+    --sage-agent-gateway-border: var(--sage-yellow-600);
+    --sage-agent-gateway-text: var(--sage-yellow-300);
+
+    --sage-agent-sage-bg: rgba(99, 102, 241, 0.15);
+    --sage-agent-sage-border: var(--sage-indigo-600);
+    --sage-agent-sage-text: var(--sage-indigo-300);
+
+    /* Shadows - Dark Mode */
+    --sage-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.25);
+    --sage-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+    --sage-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+    --sage-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+    --sage-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+  }
+}
+
+/* ========================================
+   3. Utility Classes
+   ======================================== */
+
+/* Typography Classes */
+.sage-heading-1 {
+  font-size: var(--sage-text-4xl);
+  font-weight: 700;
+  line-height: var(--sage-leading-tight);
+  color: var(--sage-text-primary);
+}
+
+.sage-heading-2 {
+  font-size: var(--sage-text-3xl);
+  font-weight: 600;
+  line-height: var(--sage-leading-tight);
+  color: var(--sage-text-primary);
+}
+
+.sage-heading-3 {
+  font-size: var(--sage-text-2xl);
+  font-weight: 600;
+  line-height: var(--sage-leading-snug);
+  color: var(--sage-text-primary);
+}
+
+.sage-heading-4 {
+  font-size: var(--sage-text-xl);
+  font-weight: 600;
+  line-height: var(--sage-leading-snug);
+  color: var(--sage-text-primary);
+}
+
+.sage-body-large {
+  font-size: var(--sage-text-lg);
+  line-height: var(--sage-leading-relaxed);
+  color: var(--sage-text-primary);
+}
+
+.sage-body {
+  font-size: var(--sage-text-base);
+  line-height: var(--sage-leading-normal);
+  color: var(--sage-text-primary);
+}
+
+.sage-body-small {
+  font-size: var(--sage-text-sm);
+  line-height: var(--sage-leading-normal);
+  color: var(--sage-text-secondary);
+}
+
+.sage-caption {
+  font-size: var(--sage-text-xs);
+  line-height: var(--sage-leading-normal);
+  color: var(--sage-text-tertiary);
+}
+
+.sage-code {
+  font-family: var(--sage-font-mono);
+  font-size: var(--sage-text-sm);
+  background: var(--sage-bg-tertiary);
+  padding: var(--sage-space-1) var(--sage-space-2);
+  border-radius: var(--sage-radius-sm);
+  color: var(--sage-text-primary);
+}
+
+/* Button Classes */
+.sage-btn {
+  font-family: var(--sage-font-sans);
+  font-size: var(--sage-text-sm);
+  font-weight: 500;
+  padding: var(--sage-space-2) var(--sage-space-4);
+  border-radius: var(--sage-radius-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sage-space-2);
+}
+
+.sage-btn-primary {
+  background: var(--sage-btn-primary-bg);
+  color: var(--sage-btn-primary-text);
+}
+
+.sage-btn-primary:hover {
+  background: var(--sage-btn-primary-hover);
+}
+
+.sage-btn-secondary {
+  background: var(--sage-btn-secondary-bg);
+  color: var(--sage-btn-secondary-text);
+  border: 1px solid var(--sage-border-default);
+}
+
+.sage-btn-secondary:hover {
+  background: var(--sage-btn-secondary-hover);
+}
+
+/* Card Classes */
+.sage-card {
+  background: var(--sage-bg-primary);
+  border: 1px solid var(--sage-border-default);
+  border-radius: var(--sage-radius-lg);
+  padding: var(--sage-space-6);
+  box-shadow: var(--sage-shadow);
+}
+
+.sage-card-header {
+  background: var(--sage-bg-secondary);
+  border-bottom: 1px solid var(--sage-border-default);
+  padding: var(--sage-space-4) var(--sage-space-6);
+  border-radius: var(--sage-radius-lg) var(--sage-radius-lg) 0 0;
+}
+
+/* Input Classes */
+.sage-input {
+  background: var(--sage-input-bg);
+  border: 1px solid var(--sage-input-border);
+  border-radius: var(--sage-radius-md);
+  padding: var(--sage-space-2) var(--sage-space-3);
+  font-size: var(--sage-text-base);
+  color: var(--sage-input-text);
+  transition: all 0.2s ease;
+}
+
+.sage-input:focus {
+  outline: none;
+  border-color: var(--sage-input-focus-border);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.sage-input::placeholder {
+  color: var(--sage-input-placeholder);
+}
+
+/* Status Badges */
+.sage-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sage-space-1);
+  padding: var(--sage-space-1) var(--sage-space-3);
+  border-radius: var(--sage-radius-full);
+  font-size: var(--sage-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.sage-badge-success {
+  background: var(--sage-status-success-bg);
+  border: 1px solid var(--sage-status-success-border);
+  color: var(--sage-status-success-text);
+}
+
+.sage-badge-warning {
+  background: var(--sage-status-warning-bg);
+  border: 1px solid var(--sage-status-warning-border);
+  color: var(--sage-status-warning-text);
+}
+
+.sage-badge-error {
+  background: var(--sage-status-error-bg);
+  border: 1px solid var(--sage-status-error-border);
+  color: var(--sage-status-error-text);
+}
+
+.sage-badge-info {
+  background: var(--sage-status-info-bg);
+  border: 1px solid var(--sage-status-info-border);
+  color: var(--sage-status-info-text);
+}
+
+/* Agent Type Badges */
+.sage-agent-badge {
+  padding: var(--sage-space-2) var(--sage-space-3);
+  border-radius: var(--sage-radius-md);
+  font-size: var(--sage-text-sm);
+  font-weight: 500;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.sage-agent-routing {
+  background: var(--sage-agent-routing-bg);
+  border-color: var(--sage-agent-routing-border);
+  color: var(--sage-agent-routing-text);
+}
+
+.sage-agent-planning {
+  background: var(--sage-agent-planning-bg);
+  border-color: var(--sage-agent-planning-border);
+  color: var(--sage-agent-planning-text);
+}
+
+.sage-agent-ordering {
+  background: var(--sage-agent-ordering-bg);
+  border-color: var(--sage-agent-ordering-border);
+  color: var(--sage-agent-ordering-text);
+}
+
+.sage-agent-gateway {
+  background: var(--sage-agent-gateway-bg);
+  border-color: var(--sage-agent-gateway-border);
+  color: var(--sage-agent-gateway-text);
+}
+
+.sage-agent-sage {
+  background: var(--sage-agent-sage-bg);
+  border-color: var(--sage-agent-sage-border);
+  color: var(--sage-agent-sage-text);
+}
+
+/* Message Bubbles */
+.sage-message {
+  padding: var(--sage-space-3) var(--sage-space-4);
+  border-radius: var(--sage-radius-lg);
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+.sage-message-user {
+  background: var(--sage-primary-500);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: var(--sage-radius-sm);
+}
+
+.sage-message-agent {
+  background: var(--sage-bg-tertiary);
+  color: var(--sage-text-primary);
+  border-bottom-left-radius: var(--sage-radius-sm);
+}
+
+.sage-message-error {
+  background: var(--sage-status-error-bg);
+  color: var(--sage-status-error-text);
+  border: 1px solid var(--sage-status-error-border);
+}
+
+/* Scrollbar Styles */
+.sage-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.sage-scrollbar::-webkit-scrollbar-track {
+  background: var(--sage-bg-secondary);
+  border-radius: var(--sage-radius-full);
+}
+
+.sage-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sage-gray-400);
+  border-radius: var(--sage-radius-full);
+}
+
+.sage-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--sage-gray-500);
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  .sage-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--sage-gray-600);
+  }
+  
+  .sage-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--sage-gray-500);
+  }
+}
+
+/* Tab Classes */
+.sage-tab-active {
+  background: var(--sage-bg-primary);
+  color: var(--sage-text-primary);
+  box-shadow: var(--sage-shadow-sm);
+  font-weight: 600;
+}
+
+.sage-tab-inactive {
+  background: transparent;
+  color: var(--sage-text-secondary);
+  font-weight: 500;
+}
+
+.sage-tab-inactive:hover {
+  background: var(--sage-bg-secondary);
+  color: var(--sage-text-primary);
+}
+
+/* Info Card Classes */
+.sage-info-card {
+  background: linear-gradient(135deg, 
+    rgba(37, 99, 235, 0.05) 0%, 
+    rgba(99, 102, 241, 0.05) 100%);
+  border: 1px solid var(--sage-primary-200);
+  border-radius: var(--sage-radius-xl);
+  padding: var(--sage-space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.sage-info-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    var(--sage-primary-500) 0%, 
+    var(--sage-indigo-500) 100%);
+}
+
+.sage-info-highlight {
+  background: var(--sage-bg-primary);
+  border: 1px solid var(--sage-primary-200);
+  border-radius: var(--sage-radius-lg);
+  padding: var(--sage-space-3);
+  box-shadow: var(--sage-shadow-sm);
+}
+
+.sage-info-highlight strong {
+  color: var(--sage-primary-700);
+  font-weight: 600;
+}
+
+/* Dark mode info card */
+@media (prefers-color-scheme: dark) {
+  .sage-info-card {
+    background: linear-gradient(135deg, 
+      rgba(37, 99, 235, 0.1) 0%, 
+      rgba(99, 102, 241, 0.1) 100%);
+    border-color: var(--sage-primary-600);
+  }
+  
+  .sage-info-highlight {
+    background: var(--sage-bg-secondary);
+    border-color: var(--sage-primary-600);
+  }
+  
+  .sage-info-highlight strong {
+    color: var(--sage-primary-400);
+  }
+}
+
+/* Animation Classes */
+@keyframes sage-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes sage-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sage-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sage-animate-pulse {
+  animation: sage-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.sage-animate-spin {
+  animation: sage-spin 1s linear infinite;
+}
+
+.sage-animate-fade-in {
+  animation: sage-fade-in 0.3s ease-out;
+}
