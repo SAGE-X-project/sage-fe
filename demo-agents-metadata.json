@@ -1,0 +1,294 @@
+{
+  "agents": [
+    {
+      "name": "root",
+      "did": "did:sage:ethereum:0x1234567890123456789012345678901234567890",
+      "metadata": {
+        "name": "SAGE Root Orchestrator",
+        "description": "Main orchestration agent that intelligently routes tasks to specialized sub-agents",
+        "version": "1.0.0",
+        "type": "orchestrator",
+        "endpoint": "http://localhost:8080",
+        "publicKey": "0x04a7b1f6b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1",
+        "capabilities": {
+          "type": "root",
+          "skills": [
+            "task_routing",
+            "agent_coordination",
+            "request_analysis",
+            "context_understanding",
+            "multi_agent_orchestration"
+          ],
+          "subagents": ["ordering", "planning"],
+          "version": "1.0.0",
+          "maxConcurrentTasks": 10,
+          "supportedProtocols": ["http", "https", "ws"],
+          "responseFormats": ["json", "text"]
+        },
+        "sage": {
+          "protocolVersion": "1.0.0",
+          "signatureAlgorithm": "ed25519",
+          "verificationMethod": "rfc9421"
+        }
+      }
+    },
+    {
+      "name": "ordering",
+      "did": "did:sage:ethereum:0x2345678901234567890123456789012345678901",
+      "metadata": {
+        "name": "SAGE Ordering Agent",
+        "description": "Specialized agent for e-commerce orders, purchases, and shopping assistance",
+        "version": "1.0.0",
+        "type": "specialist",
+        "endpoint": "http://localhost:8083",
+        "publicKey": "0x04b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
+        "capabilities": {
+          "type": "ordering",
+          "skills": [
+            "order_processing",
+            "purchase_management",
+            "shopping_cart_management",
+            "payment_processing",
+            "delivery_tracking",
+            "product_recommendation"
+          ],
+          "supportedVendors": [
+            "amazon",
+            "ebay",
+            "alibaba",
+            "local_stores",
+            "shopify"
+          ],
+          "paymentMethods": [
+            "credit_card",
+            "debit_card",
+            "paypal",
+            "crypto",
+            "bank_transfer"
+          ],
+          "version": "1.0.0",
+          "maxOrderValue": 10000,
+          "currencies": ["USD", "EUR", "KRW", "JPY", "CNY"]
+        },
+        "sage": {
+          "protocolVersion": "1.0.0",
+          "signatureAlgorithm": "ed25519",
+          "verificationMethod": "rfc9421",
+          "requiredVerification": true
+        }
+      }
+    },
+    {
+      "name": "planning",
+      "did": "did:sage:ethereum:0x3456789012345678901234567890123456789012",
+      "metadata": {
+        "name": "SAGE Planning Agent",
+        "description": "Intelligent travel and schedule planning agent with optimization capabilities",
+        "version": "1.0.0",
+        "type": "specialist",
+        "endpoint": "http://localhost:8084",
+        "publicKey": "0x04c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+        "capabilities": {
+          "type": "planning",
+          "skills": [
+            "trip_planning",
+            "schedule_optimization",
+            "route_planning",
+            "accommodation_booking",
+            "transportation_arrangement",
+            "activity_recommendation",
+            "budget_management"
+          ],
+          "supportedFeatures": [
+            "multi_destination",
+            "budget_optimization",
+            "time_constraints",
+            "group_travel",
+            "accessibility_options",
+            "weather_consideration"
+          ],
+          "dataProviders": [
+            "google_maps",
+            "booking_com",
+            "tripadvisor",
+            "weather_api",
+            "flight_aggregators"
+          ],
+          "version": "1.0.0",
+          "maxTripDuration": 365,
+          "supportedRegions": ["global"]
+        },
+        "sage": {
+          "protocolVersion": "1.0.0",
+          "signatureAlgorithm": "ed25519",
+          "verificationMethod": "rfc9421",
+          "requiredVerification": true
+        }
+      }
+    }
+  ],
+  "scenarios": {
+    "accommodation": {
+      "name": "Hotel Booking Scenario",
+      "description": "Demonstrates SAGE protocol in accommodation booking with potential message tampering",
+      "agents": ["root", "planning"],
+      "flow": [
+        {
+          "step": 1,
+          "from": "user",
+          "to": "root",
+          "action": "request",
+          "message": "Book a hotel in Myeongdong"
+        },
+        {
+          "step": 2,
+          "from": "root",
+          "to": "planning",
+          "action": "delegate",
+          "message": "Find and book accommodation in Myeongdong",
+          "sage": true
+        },
+        {
+          "step": 3,
+          "from": "planning",
+          "to": "root",
+          "action": "response",
+          "message": "Top 3 verified hotels with availability",
+          "sage": true
+        },
+        {
+          "step": 4,
+          "from": "root",
+          "to": "user",
+          "action": "result",
+          "message": "Hotel booking confirmed with verification"
+        }
+      ],
+      "attack_vector": {
+        "type": "message_tampering",
+        "target": "step_2",
+        "original": "Verified hotels from Booking.com",
+        "tampered": "Phishing site with fake hotels"
+      }
+    },
+    "delivery": {
+      "name": "Delivery Address Tampering",
+      "description": "Shows how SAGE prevents delivery address manipulation",
+      "agents": ["root", "ordering"],
+      "flow": [
+        {
+          "step": 1,
+          "from": "user",
+          "to": "root",
+          "action": "request",
+          "message": "Order sunglasses to my home"
+        },
+        {
+          "step": 2,
+          "from": "root",
+          "to": "ordering",
+          "action": "delegate",
+          "message": "Process order with user's home address",
+          "sage": true
+        },
+        {
+          "step": 3,
+          "from": "ordering",
+          "to": "root",
+          "action": "response",
+          "message": "Order placed with verified address",
+          "sage": true
+        },
+        {
+          "step": 4,
+          "from": "root",
+          "to": "user",
+          "action": "result",
+          "message": "Order confirmation with delivery tracking"
+        }
+      ],
+      "attack_vector": {
+        "type": "address_manipulation",
+        "target": "step_2",
+        "original": "User's home address",
+        "tampered": "Gangnam station locker"
+      }
+    },
+    "payment": {
+      "name": "Payment Information Security",
+      "description": "Demonstrates SAGE protection for financial transactions",
+      "agents": ["root", "ordering"],
+      "flow": [
+        {
+          "step": 1,
+          "from": "user",
+          "to": "root",
+          "action": "request",
+          "message": "Buy $100 worth of stablecoins"
+        },
+        {
+          "step": 2,
+          "from": "root",
+          "to": "ordering",
+          "action": "delegate",
+          "message": "Process payment for $100 USDT to user wallet",
+          "sage": true
+        },
+        {
+          "step": 3,
+          "from": "ordering",
+          "to": "root",
+          "action": "response",
+          "message": "Transaction completed with signature verification",
+          "sage": true
+        },
+        {
+          "step": 4,
+          "from": "root",
+          "to": "user",
+          "action": "result",
+          "message": "Payment successful with blockchain confirmation"
+        }
+      ],
+      "attack_vector": {
+        "type": "amount_manipulation",
+        "target": "step_2",
+        "original": "$100 to user wallet",
+        "tampered": "$500 to attacker wallet"
+      }
+    }
+  },
+  "security": {
+    "sage_protocol": {
+      "version": "1.0.0",
+      "rfc": "9421",
+      "algorithm": "ed25519",
+      "signature_fields": [
+        "@method",
+        "@path",
+        "content-type",
+        "date",
+        "x-agent-did"
+      ],
+      "verification_requirements": {
+        "timestamp_tolerance": 300,
+        "nonce_required": true,
+        "replay_protection": true
+      }
+    }
+  },
+  "deployment": {
+    "local": {
+      "blockchain": "hardhat",
+      "network_id": 31337,
+      "contract_address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "rpc_url": "http://localhost:8545"
+    },
+    "testnet": {
+      "blockchain": "kaia_testnet",
+      "network_id": 1001,
+      "contract_address": "0x0000000000000000000000000000000000000000",
+      "rpc_url": "https://api.baobab.klaytn.net:8651"
+    }
+  }
+}
